@@ -4,14 +4,17 @@ import { ENV } from "./config/env.js";
 import { db } from "./config/db.js";
 import { favoritesTable } from "./db/schema.js";
 import { and, eq } from "drizzle-orm";
+import job from "./config/cron.js";
 
 const app = express();
-const PORT = ENV.PORT || 8001;
+const PORT = ENV.PORT || 5001;
+
+if (ENV.NODE_ENV === "production") job.start();
 
 app.use(express.json()); // to query req.body as json
 
 app.get("/api/health", (req, res) => {
-    res.status(200).json({ message: "OK", status: 200 });
+    res.status(200).json({ message: "OK" });
 });
 
 const api = '/api/favorites'
